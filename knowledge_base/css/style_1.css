@@ -1,0 +1,183 @@
+.container {
+    position: relative;
+}
+
+.page-title {
+    background: #ffffff;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 35px;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    color: #0099CC;
+    font-weight: 700;
+    text-decoration: none solid rgb(68, 68, 68);
+    font-style: italic;
+    font-variant: small-caps;
+    text-transform: capitalize;
+    position: fixed;
+    top: 0;
+    left: 90;
+    width: 100%;
+    z-index: 1000; /* Ensure the title appears above the menu */
+}
+#menu {
+    background: #0099CC;
+    height: 38px;
+    border-radius: 10px;
+    position: fixed;
+    top: 42px; /* Adjust as needed to provide space for the title */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 99%;
+    z-index: 999; /* Ensure the menu appears below the title */
+}
+
+
+.sub-title {
+    background: #ffffff;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 35px;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    color: #161D84;
+    font-weight: 700;
+    text-decoration: none solid rgb(68, 68, 68);
+    font-style: italic;
+    font-variant: small-caps;
+    text-transform: capitalize;
+    position: fixed;
+    top: 0;
+    left: 90;
+    width: 100%;
+    z-index: 998; /* Ensure the title appears above the menu */
+}
+#subtitleFont {
+font-family: Tahoma, Geneva, sans-serif;
+font-size: 32px;
+letter-spacing: 2px;
+word-spacing: 2px;
+color: #1F618D;
+font-weight: 700;
+text-decoration: none solid rgb(68, 68, 68);
+font-style: italic;
+font-variant: small-caps;
+text-transform: capitalize;
+text-align: center;
+}
+
+
+@media screen and (max-width: 800px) {
+    #menu {
+        border-radius: 0; /* Remove border-radius for smaller screens */
+    }
+}
+
+#menu ul,
+#menu li {
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    white-space: nowrap;
+}
+
+#menu ul {
+    width: 100%;
+    text-align: center;
+}
+
+#menu li {
+    display: inline-block;
+    position: relative;
+}
+
+#menu a {
+    display: block;
+    line-height: 38px;
+    padding: 0 14px;
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 18px;
+    text-transform: capitalize;
+}
+
+#menu a.dropdown-arrow:after {
+    content: "\2B9F";
+    margin-left: 5px;
+}
+
+#menu li a:hover {
+    color: #0099CC;
+    background: #F2F2F2;
+}
+
+#menu input {
+    display: none;
+    margin: 0;
+    padding: 0;
+    height: 38px;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#menu label {
+    display: none;
+    line-height: 38px;
+    text-align: center;
+    position: absolute;
+    left: 35px;
+}
+
+#menu label:before {
+    font-size: 1.6em;
+    color: #FFFFFF;
+    content: "\2261";
+    margin-left: 20px;
+}
+
+#menu ul.sub-menus {
+    height: auto;
+    overflow: hidden;
+    width: 220px;
+    background: #444444;
+    position: absolute;
+    z-index: 99;
+    display: none;
+}
+
+#menu ul.sub-menus li {
+    display: block;
+    text-align: left;
+    width: 90%;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+#menu ul.sub-menus a {
+    color: #FFFFFF;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+#menu li:hover ul.sub-menus {
+    display: block;
+
+}
+
+#menu ul.sub-menus a:hover {
+    background: #F2F2F2;
+    color: #444444;
+}
+footer {
+     /* Change these properties */
+     bottom: 0;
+     --border: 1px solid black;
+     border-radius: 10px;
+                   padding: 10px;
+    position: fixed;
+    background: #0099CC;
+    color: #FFFFFF;
+    float: left;
+    width: calc(100% - 40px);
+    text-align: center;
+    }
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <style>
+        /* Style for FAQ tree on the left */
+        #faq-tree {
+            float: left;
+            width: 30%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+
+        /* Style for content on the right */
+        #content {
+            float: left;
+            width: 70%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Style for hyperlinks in the FAQ tree */
+        #faq-tree a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* Style for active hyperlink in the FAQ tree */
+        #faq-tree a.active {
+            font-weight: bold;
+            color: #0099cc;
+        }
+    </style>
+</head>
+<body>
+
+<div id="faq-tree"></div>
+<div id="content"></div>
+
+<script>
+    // Function to fetch HTML files from the "k_Drive" subdirectory
+    function fetchHTMLFiles() {
+        // Clear the FAQ tree
+        document.getElementById('faq-tree').innerHTML = '';
+
+        // Fetch HTML files from the "k_Drive" directory
+        fetch('k_Drive/')
+            .then(response => response.text())
+            .then(data => {
+                // Parse the HTML content to extract file names
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(data, 'text/html');
+                const links = htmlDoc.querySelectorAll('a[href$=".html"]');
+
+                // Create hyperlinks for each HTML file
+                links.forEach(link => {
+                    const fileName = link.getAttribute('href').replace('.html', '');
+                    const a = document.createElement('a');
+                    a.setAttribute('href', link.getAttribute('href'));
+                    a.textContent = fileName;
+                    a.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        loadHTMLFile(this.getAttribute('href'));
+                        updateActiveLink(this);
+                    });
+                    document.getElementById('faq-tree').appendChild(a);
+                });
+            })
+            .catch(error => console.error('Error fetching HTML files:', error));
+    }
+
+    // Function to load HTML file content on the right side
+    function loadHTMLFile(url) {
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('content').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading HTML file:', error));
+    }
+
+    // Function to update active link in the FAQ tree
+    function updateActiveLink(link) {
+        const links = document.querySelectorAll('#faq-tree a');
+        links.forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+    }
+
+    // Call fetchHTMLFiles() function on page load
+    window.onload = fetchHTMLFiles;
+</script>
+
+</body>
+</html>

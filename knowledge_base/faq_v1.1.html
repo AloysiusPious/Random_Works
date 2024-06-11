@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <link rel='stylesheet' href='css/style.css'>
+    <style>
+                .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+        /* Style for FAQ tree on the left */
+        #faq-tree {
+            float: left;
+            width: 30%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+
+        /* Style for content on the right */
+        #content {
+            float: left;
+            width: 70%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Style for hyperlinks in the FAQ tree */
+        #faq-tree a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* Style for active hyperlink in the FAQ tree */
+        #faq-tree a.active {
+            font-weight: bold;
+            color: #0099cc;
+        }
+    </style>
+    <div class="page-title">abc Drive FAQ</div>
+    <br>
+</head>
+
+<body>
+<button class="btn" onclick="goToHomePage()">Go Back to Home Page</button>
+<div id="faq-tree"></div>
+<div id="content"></div>
+<script>
+    // Define the subdirectory name
+    const subdirectory = 'faq';
+
+    // Define the HTML file extension
+    const htmlFileExtension = '.html';
+
+    // Function to fetch HTML files from the subdirectory
+    function fetchHTMLFiles() {
+        // Clear the FAQ tree
+        document.getElementById('faq-tree').innerHTML = '';
+
+        // Fetch HTML files from the subdirectory
+        fetch(subdirectory + '/')
+            .then(response => response.text())
+            .then(data => {
+                // Parse the HTML content to extract file names
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(data, 'text/html');
+                const links = htmlDoc.querySelectorAll(`a[href$="${htmlFileExtension}"]`);
+
+                // Create hyperlinks for each HTML file
+                links.forEach((link, index) => {
+                    const fileName = link.getAttribute('href').replace(htmlFileExtension, '');
+                    const a = document.createElement('a');
+                    a.setAttribute('href', link.getAttribute('href')); // Set the file name as href
+                    a.textContent = (index + 1) + '. ' + fileName;
+                    a.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        loadHTMLFile(link.getAttribute('href')); // Load the HTML file
+                        updateActiveLink(this);
+                    });
+                    document.getElementById('faq-tree').appendChild(a);
+                });
+            })
+            .catch(error => console.error('Error fetching HTML files:', error));
+    }
+
+// Function to load HTML file content on the right side
+function loadHTMLFile(fileName) {
+    const url = subdirectory + '/' + fileName; // Construct the URL
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('content').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading HTML file:', error));
+}
+
+    // Function to update active link in the FAQ tree
+    function updateActiveLink(link) {
+        const links = document.querySelectorAll('#faq-tree a');
+        links.forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+    }
+
+    // Call fetchHTMLFiles() function on page load
+    window.onload = fetchHTMLFiles;
+    function goToHomePage() {
+        // Redirect to the home page
+        window.location.href = "../index.html";
+    }
+</script>
+
+</body>
+</html>

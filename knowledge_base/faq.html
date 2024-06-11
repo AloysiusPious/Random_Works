@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<meta charset='UTF-8'>
+<Title>IT Operations Portal</Title>
+<link rel="icon" type="image/x-icon" href="../img/abc_browser_icon.png" width="100">
+<link rel='stylesheet' href='css/style.css'>
+<link rel="stylesheet" href="../../css/application_home.css">
+<script src='js/script.js'></script>
+<style>
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Style for FAQ tree on the left */
+        #faq-tree {
+            float: left;
+            width: 30%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+
+        /* Style for content on the right */
+        #content {
+            float: left;
+            width: 70%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Style for hyperlinks in the FAQ tree */
+        #faq-tree a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* Style for active hyperlink in the FAQ tree */
+        #faq-tree a.active {
+            font-weight: bold;
+            color: #0099cc;
+        }
+
+        /* Move page title and add some styles */
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+</style>
+<body>
+<video id="background-video" autoplay loop muted playsinline >
+  <source src="../img/2 K Logo Removed No Endframe3Loop.mp4" type="video/mp4">
+</video>
+    <div class="container">
+
+       <div class="page-title">IT Operations Portal</div>
+        <div class="app-category-title">Smart Systems</div>
+<div><nav id='menu'>
+  <input type='checkbox' id='responsive-menu' onclick='updatemenu()'><label></label>
+  <ul>
+      <li><a href='../revenue_assurance.html'>Home</a></li>
+          <li><a class='dropdown-arrow'>STAGING</a>
+      <ul class='sub-menus'>
+        <li><a href='../list_servers_stg.html'>List Of Servers</a></li>
+          <li><a href='../dashboard_stg.html'>Monitoring DashBoard</a></li>
+      </ul>
+    </li>
+    <li><a class='dropdown-arrow'>PROD</a>
+      <ul class='sub-menus'>
+        <li><a href='../list_servers_prd.html'>List Of Servers</a></li>
+      </ul>
+    </li>
+        <li><a class='dropdown-arrow' >DR</a>
+      <ul class='sub-menus'>
+
+        <li><a href='../list_servers_dr.html'>List Of Servers</a></li>
+      </ul>
+            <li><a href='../app_support_contacts.html'>Support Contacts</a></li>
+    </li>
+  </nav>
+</div>
+        </div>
+<script>
+    // Define the subdirectory name
+    const subdirectory = 'doc';
+
+    // Define the PDF file extension
+    const pdfFileExtension = '.pdf';
+
+    // Function to fetch PDF files from the subdirectory
+    function fetchPDFFiles() {
+        // Clear the FAQ tree
+        document.getElementById('faq-tree').innerHTML = '';
+
+        // Fetch PDF files from the subdirectory
+        fetch(subdirectory + '/')
+            .then(response => response.text())
+            .then(data => {
+                // Parse the HTML content to extract file names
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(data, 'text/html');
+                const links = htmlDoc.querySelectorAll(`a[href$="${pdfFileExtension}"]`);
+
+                links.forEach((link, index) => {
+                    const fileName = link.getAttribute('href').replace(pdfFileExtension, '');
+                    const a = document.createElement('a');
+                    a.setAttribute('href', link.getAttribute('href')); // Set the file name as href
+                    a.textContent = (index + 1) + '. ' + fileName;
+                    a.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        loadPDFFile(link.getAttribute('href')); // Load the PDF file
+                        updateActiveLink(this);
+                    });
+                    document.getElementById('faq-tree').appendChild(a);
+                });
+            })
+            .catch(error => console.error('Error fetching PDF files:', error));
+    }
+
+    // Function to load PDF file into the viewer
+    function loadPDFFile(fileName) {
+        const url = subdirectory + '/' + fileName; // Construct the URL
+        const viewer = document.getElementById('pdf-viewer');
+        viewer.setAttribute('src', url);
+    }
+
+    // Function to update active link in the FAQ tree
+    function updateActiveLink(link) {
+        const links = document.querySelectorAll('#faq-tree a');
+        links.forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+    }
+
+    // Call fetchPDFFiles() function on page load
+    window.onload = fetchPDFFiles;
+
+    // Function to redirect to the home page
+    function goToHomePage() {
+        window.location.href = "../../index.html";
+    }
+</script>
+    <div class="container">
+       <div class="page-title">IT Operations Portal</div>
+
+        </div>
+<br><br><br><br>
+<font size="5" color="blue" style="background-color: #FDFEFE;"><b>Revenue Assurance - Knowledge Base</b></font>
+<div id="faq-tree"></div>
+<div id="content">
+    <iframe id="pdf-viewer" src="" width="100%" height="100%" frameborder="0"></iframe>
+</div>
+ <!-- Add the title here -->
+    <!--<footer><div class="footer">&copy; IT Operations. abc</div></footer>-->
+</body>
+</html>
